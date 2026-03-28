@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flowes for you ante meya</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --petal-1: #ff6b9d;
+      --petal-2: #c44569;
+      --petal-3: #f8b500;
+      --center: #fff5e6;
+      --glow: rgba(255, 120, 180, 0.55);
+    }
+
+    body {
+      min-height: 100vh;
+      overflow: hidden;
+      font-family: system-ui, sans-serif;
+      cursor: crosshair;
+    }
+
+    .scene {
+      position: fixed;
+      inset: 0;
+      background: #0a0612;
+    }
+
+    .aurora {
+      position: absolute;
+      inset: -20%;
+      will-change: transform;
+    }
+
+    .aurora-blob {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 40%, rgba(139, 92, 246, 0.35), transparent 55%),
+        radial-gradient(ellipse 70% 60% at 80% 60%, rgba(236, 72, 153, 0.28), transparent 50%),
+        radial-gradient(ellipse 60% 40% at 50% 100%, rgba(34, 211, 238, 0.12), transparent 45%),
+        radial-gradient(circle at 50% 50%, #1a0a2e 0%, #0a0612 70%);
+      animation: auroraShift 14s ease-in-out infinite alternate;
+      will-change: transform, filter;
+    }
+
+    @keyframes auroraShift {
+      0% {
+        transform: translate(0, 0) scale(1);
+        filter: hue-rotate(0deg) brightness(1);
+      }
+      100% {
+        transform: translate(2%, -3%) scale(1.08);
+        filter: hue-rotate(25deg) brightness(1.05);
+      }
+    }
+
+    .vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 45%, transparent 0%, rgba(0, 0, 0, 0.55) 100%);
+      pointer-events: none;
+    }
+
+    #particles {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .bouquet-wrap {
+      position: absolute;
+      left: 50%;
+      top: calc(50% + min(5rem, 11vh));
+      z-index: 4;
+      width: min(92vmin, 640px);
+      height: min(92vmin, 640px);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    .tulip-ring {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: visible;
+      opacity: 0.98;
+    }
+
+    .tulip-ring-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+      pointer-events: none;
+    }
+
+    .tulip-sync-ring {
+      transform-origin: 256px 256px;
+      animation: wholeSway 8s ease-in-out infinite;
+    }
+
+    .tulip-cluster-wiggle {
+      transform-origin: 256px 452px;
+      animation: tulipClusterDrift 8.5s ease-in-out infinite;
+    }
+
+    @keyframes tulipClusterDrift {
+      0%, 100% { transform: translateX(0) translateY(0); }
+      33% { transform: translateX(16px) translateY(-7px); }
+      66% { transform: translateX(-14px) translateY(5px); }
+    }
+
+    .tulip-bob {
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+      animation: tulipBob 3.4s ease-in-out infinite;
+    }
+
+    .tulip-bob--1 { animation-delay: 0s; }
+    .tulip-bob--2 { animation-delay: 0.35s; }
+    .tulip-bob--3 { animation-delay: 0.7s; }
+    .tulip-bob--4 { animation-delay: 0.18s; }
+    .tulip-bob--5 { animation-delay: 0.52s; }
+    .tulip-bob--6 { animation-delay: 0.88s; }
+    .tulip-bob--7 { animation-delay: 0.1s; }
+    .tulip-bob--8 { animation-delay: 0.62s; }
+
+    @keyframes tulipBob {
+      0%, 100% { transform: rotate(-3.4deg) translateY(0); }
+      50% { transform: rotate(3.6deg) translateY(-10px); }
+    }
+
+    .butterfly-v-burst {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: visible;
+      animation: flowerPop 1.15s cubic-bezier(0.34, 1.45, 0.64, 1) 0.08s both;
+    }
+
+    .bf-v-sway {
+      position: absolute;
+      inset: 0;
+      animation: wholeSway 8s ease-in-out 1.12s infinite;
+      transform-origin: 50% 44%;
+    }
+
+    .bf-v {
+      position: absolute;
+      width: clamp(40px, 7vmin, 72px);
+      transform: translate(-50%, -50%);
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+    }
+
+    .bf-v-inner {
+      width: 100%;
+      height: auto;
+      animation: bfVFloat 9s ease-in-out infinite;
+    }
+
+    .bf-v-inner svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      overflow: visible;
+    }
+
+    .bf-v-inner--flip {
+      animation-name: bfVFloatFlip;
+    }
+
+    .bf-v--1 { left: 50%; top: 22%; }
+    .bf-v--2 { left: 34%; top: 30%; }
+    .bf-v--3 { left: 66%; top: 30%; }
+    .bf-v--4 { left: 23%; top: 38%; }
+    .bf-v--5 { left: 77%; top: 38%; }
+    .bf-v--6 { left: 40%; top: 46%; }
+    .bf-v--7 { left: 60%; top: 46%; }
+
+    .bf-v--1 .bf-v-inner { animation-delay: 1.12s; }
+    .bf-v--2 .bf-v-inner { animation-delay: 1.2s; }
+    .bf-v--3 .bf-v-inner { animation-delay: 1.18s; }
+    .bf-v--4 .bf-v-inner { animation-delay: 1.26s; }
+    .bf-v--5 .bf-v-inner { animation-delay: 1.22s; }
+    .bf-v--6 .bf-v-inner { animation-delay: 1.3s; }
+    .bf-v--7 .bf-v-inner { animation-delay: 1.32s; }
+
+    @keyframes bfVFloat {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(5px, -8px); }
+    }
+
+    @keyframes bfVFloatFlip {
+      0%, 100% { transform: scaleX(-1) translate(0, 0); }
+      50% { transform: scaleX(-1) translate(-5px, -8px); }
+    }
+
+    .bf-wing-l {
+      transform-origin: 32px 36px;
+      animation: wingBeatL 0.2s ease-in-out infinite alternate;
+    }
+
+    .bf-wing-r {
+      transform-origin: 32px 36px;
+      animation: wingBeatR 0.2s ease-in-out infinite alternate;
+      animation-delay: -0.1s;
+    }
+
+    @keyframes wingBeatL {
+      from { transform: rotate(-40deg); }
+      to { transform: rotate(-16deg); }
+    }
+
+    @keyframes wingBeatR {
+      from { transform: rotate(16deg); }
+      to { transform: rotate(40deg); }
+    }
+
+    .flower-wrap {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 0 40px var(--glow)) drop-shadow(0 0 80px rgba(168, 85, 247, 0.25));
+    }
+
+    .flower-svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .layer-back {
+      animation: wholeSway 8s ease-in-out infinite;
+      transform-origin: 50% 55%;
+    }
+
+    .layer-mid {
+      animation: wholeSway 8s ease-in-out infinite 0.15s;
+      transform-origin: 50% 52%;
+    }
+
+    .layer-front {
+      animation: wholeSway 8s ease-in-out infinite 0.3s;
+      transform-origin: 50% 50%;
+    }
+
+    @keyframes wholeSway {
+      0%, 100% { transform: rotate(-2deg) scale(1); }
+      50% { transform: rotate(2deg) scale(1.02); }
+    }
+
+    .petal-outer {
+      transform-origin: 256px 256px;
+      animation: petalPulse 5s ease-in-out infinite;
+    }
+
+    .layer-back > g:nth-child(2) > g:nth-child(1) .petal-outer { animation-delay: 0s; }
+    .layer-back > g:nth-child(2) > g:nth-child(2) .petal-outer { animation-delay: 0.15s; }
+    .layer-back > g:nth-child(2) > g:nth-child(3) .petal-outer { animation-delay: 0.3s; }
+    .layer-back > g:nth-child(2) > g:nth-child(4) .petal-outer { animation-delay: 0.45s; }
+    .layer-back > g:nth-child(2) > g:nth-child(5) .petal-outer { animation-delay: 0.6s; }
+    .layer-back > g:nth-child(2) > g:nth-child(6) .petal-outer { animation-delay: 0.75s; }
+    .layer-back > g:nth-child(2) > g:nth-child(7) .petal-outer { animation-delay: 0.9s; }
+    .layer-back > g:nth-child(2) > g:nth-child(8) .petal-outer { animation-delay: 1.05s; }
+
+    @keyframes petalPulse {
+      0%, 100% {
+        transform: scaleY(1) scaleX(1);
+        opacity: 0.92;
+      }
+      50% {
+        transform: scaleY(1.08) scaleX(1.04);
+        opacity: 1;
+      }
+    }
+
+    .petal-inner {
+      transform-box: fill-box;
+      transform-origin: center center;
+      animation: innerFlutter 4s ease-in-out infinite;
+    }
+
+    .layer-mid > g:nth-child(1) .petal-inner { animation-delay: 0.1s; }
+    .layer-mid > g:nth-child(2) .petal-inner { animation-delay: 0.25s; }
+    .layer-mid > g:nth-child(3) .petal-inner { animation-delay: 0.4s; }
+    .layer-mid > g:nth-child(4) .petal-inner { animation-delay: 0.55s; }
+    .layer-mid > g:nth-child(5) .petal-inner { animation-delay: 0.7s; }
+    .layer-mid > g:nth-child(6) .petal-inner { animation-delay: 0.85s; }
+
+    @keyframes innerFlutter {
+      0%, 100% {
+        transform: rotate(0deg) scale(1);
+      }
+      50% {
+        transform: rotate(4deg) scale(1.06);
+      }
+    }
+
+    .flower-center {
+      transform-origin: 256px 256px;
+      animation: centerBreathe 3.5s ease-in-out infinite;
+    }
+
+    @keyframes centerBreathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.06); }
+    }
+
+    .stamen-group {
+      transform-origin: 256px 248px;
+      animation: stamenTwist 6s ease-in-out infinite;
+    }
+
+    @keyframes stamenTwist {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(8deg); }
+    }
+
+    .sparkle-ring {
+      transform-origin: 256px 256px;
+      animation: ringSpin 20s linear infinite;
+      opacity: 0.45;
+    }
+
+    @keyframes ringSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .hint {
+      position: fixed;
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    .flower-bloom {
+      width: 100%;
+      height: 100%;
+      animation: flowerPop 1.15s cubic-bezier(0.34, 1.45, 0.64, 1) 0.08s both;
+    }
+
+    @keyframes flowerPop {
+      from {
+        opacity: 0;
+        transform: scale(0) rotate(-14deg);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    .popup-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: max(1.1rem, env(safe-area-inset-top) + 0.35rem) 1.25rem 1rem;
+      pointer-events: none;
+    }
+
+    .popup-track {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      will-change: transform;
+    }
+
+    .popup-sway-sync {
+      animation: wholeSway 8s ease-in-out infinite;
+      transform-origin: center top;
+      margin-top: clamp(0.25rem, 2vh, 1rem);
+    }
+
+    .popup-card {
+      position: relative;
+      max-width: min(32rem, 92vw);
+      padding: clamp(0.85rem, 3vw, 1.35rem) clamp(1.25rem, 4vw, 2rem);
+      text-align: center;
+      background: linear-gradient(155deg, rgba(255, 255, 255, 0.14), rgba(255, 140, 200, 0.08));
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 1.35rem;
+      box-shadow:
+        0 28px 70px rgba(0, 0, 0, 0.4),
+        0 0 50px rgba(236, 72, 153, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      opacity: 0;
+      transform: scale(0.72) translateY(-1.25rem);
+      animation: cardPop 1s cubic-bezier(0.34, 1.4, 0.64, 1) 0.32s forwards,
+        popupGlowPulse 8s ease-in-out 1.25s infinite;
+    }
+
+    @keyframes cardPop {
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    @keyframes popupGlowPulse {
+      0%, 100% {
+        box-shadow:
+          0 28px 70px rgba(0, 0, 0, 0.4),
+          0 0 42px rgba(236, 72, 153, 0.16),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+      50% {
+        box-shadow:
+          0 28px 70px rgba(0, 0, 0, 0.4),
+          0 0 72px rgba(244, 114, 182, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.28);
+      }
+    }
+
+    .popup-line {
+      margin: 0;
+      font-size: clamp(0.95rem, 3.8vw, 1.2rem);
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255, 252, 254, 0.96);
+      line-height: 1.75;
+    }
+
+    .popup-line--accent {
+      margin-top: 0.5rem;
+      font-size: clamp(1.2rem, 5.2vw, 1.75rem);
+      letter-spacing: 0.22em;
+      line-height: 1.5;
+    }
+
+    .popup-line--accent .w {
+      background: linear-gradient(105deg, #ffe8c8, #ff9ec4 40%, #f0abfc 75%, #c4b5fd);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+
+    .popup-line .w {
+      display: inline-block;
+      margin: 0 0.15em;
+      opacity: 0;
+      transform: translateY(0.75em) scale(0.92);
+      animation: wordReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes wordReveal {
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .popup-line:nth-child(2) .w:nth-child(1) { animation-delay: 0.52s; }
+    .popup-line:nth-child(2) .w:nth-child(2) { animation-delay: 0.62s; }
+    .popup-line:nth-child(2) .w:nth-child(3) { animation-delay: 0.72s; }
+    .popup-line:nth-child(3) .w:nth-child(1) { animation-delay: 0.88s; }
+    .popup-line:nth-child(3) .w:nth-child(2) { animation-delay: 0.98s; }
+
+    .popup-shine {
+      position: absolute;
+      top: 0;
+      left: -60%;
+      width: 55%;
+      height: 100%;
+      background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+      transform: skewX(-18deg);
+      animation: shineLoop 5s ease-in-out infinite;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @keyframes shineLoop {
+      0%, 8% {
+        opacity: 0;
+        left: -55%;
+      }
+      18% { opacity: 1; }
+      35% {
+        opacity: 0;
+        left: 105%;
+      }
+      100% {
+        opacity: 0;
+        left: 105%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene">
+    <div class="aurora" id="aurora"><div class="aurora-blob" aria-hidden="true"></div></div>
+    <canvas id="particles" aria-hidden="true"></canvas>
+
+    <div class="bouquet-wrap" id="bouquetWrap">
+      <div class="tulip-ring" aria-hidden="true">
+        <svg class="tulip-ring-svg" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="tulipStem" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#1d4a2e" />
+              <stop offset="100%" style="stop-color:#2d6a45" />
+            </linearGradient>
+            <linearGradient id="tulipPink" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" style="stop-color:#be185d" />
+              <stop offset="55%" style="stop-color:#f472b6" />
+              <stop offset="100%" style="stop-color:#fce7f3" />
+            </linearGradient>
+            <linearGradient id="tulipYellow" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" style="stop-color:#a16207" />
+              <stop offset="50%" style="stop-color:#facc15" />
+              <stop offset="100%" style="stop-color:#fef9c3" />
+            </linearGradient>
+            <linearGradient id="tulipViolet" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" style="stop-color:#5b21b6" />
+              <stop offset="45%" style="stop-color:#a78bfa" />
+              <stop offset="100%" style="stop-color:#ede9fe" />
+            </linearGradient>
+            <linearGradient id="tulipCream" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" style="stop-color:#9f1239" />
+              <stop offset="60%" style="stop-color:#fda4af" />
+              <stop offset="100%" style="stop-color:#fff1f2" />
+            </linearGradient>
+            <linearGradient id="tulipRefPurple" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" style="stop-color:#5b21b6" />
+              <stop offset="40%" style="stop-color:#7c3aed" />
+              <stop offset="85%" style="stop-color:#c4b5fd" />
+              <stop offset="100%" style="stop-color:#fae8ff" />
+            </linearGradient>
+          </defs>
+          <g class="tulip-sync-ring">
+          <g class="tulip-cluster-wiggle">
+            <g class="tulip-foliage">
+              <ellipse cx="256" cy="498" rx="220" ry="26" fill="#14532d" opacity="0.4" />
+              <path fill="#166534" d="M40 512 Q120 462 200 478 Q256 468 312 475 Q400 458 476 492 L480 512 Z" opacity="0.62" />
+              <path fill="#22c55e" d="M60 512 Q170 478 256 488 Q350 475 455 500 L465 512 Z" opacity="0.38" />
+            </g>
+            <ellipse cx="198" cy="476" rx="10" ry="15" fill="#86efac" opacity="0.5" transform="rotate(-12 198 476)" />
+            <ellipse cx="312" cy="478" rx="9" ry="13" fill="#bbf7d0" opacity="0.48" transform="rotate(10 312 478)" />
+            <g transform="translate(82 440) rotate(-4) scale(0.34) translate(-76 -198)">
+              <g class="tulip-bob tulip-bob--1">
+                <path fill="url(#tulipStem)" d="M74 198 L78 198 L80 95 Q77 88 74 92 Z" />
+                <path fill="#276749" opacity="0.85" d="M72 150 Q40 130 35 155 Q55 158 72 150" />
+                <path fill="url(#tulipRefPurple)" d="M74 96 C56 89 49 106 61 119 C60 110 74 104 74 96 M74 96 C74 104 88 110 87 119 C99 106 92 89 74 96 M61 119 Q74 126 87 119 Q74 113 61 119" />
+              </g>
+            </g>
+            <g transform="translate(128 428) rotate(3) scale(0.38) translate(-76 -198)">
+              <g class="tulip-bob tulip-bob--2">
+                <path fill="url(#tulipStem)" d="M74 198 L78 198 L79 102 Q76 95 73 99 Z" />
+                <path fill="#276749" d="M70 155 Q45 138 38 162 Q58 162 70 155" opacity="0.88" />
+                <path fill="url(#tulipYellow)" d="M73 100 C52 92 45 112 58 125 C64 115 73 110 73 100 M73 100 C73 110 82 115 88 125 C100 112 93 92 73 100 M58 125 Q73 130 88 125 Q73 118 58 125" />
+              </g>
+            </g>
+            <g transform="translate(172 448) rotate(-2) scale(0.3) translate(-76 -198)">
+              <g class="tulip-bob tulip-bob--3">
+                <path fill="url(#tulipStem)" d="M74 198 L78 198 L81 98 Q77 91 74 96 Z" />
+                <path fill="#276749" d="M68 152 Q42 132 36 158 Q54 158 68 152" opacity="0.88" />
+                <path fill="url(#tulipRefPurple)" d="M74 96 C56 89 49 106 61 119 C60 110 74 104 74 96 M74 96 C74 104 88 110 87 119 C99 106 92 89 74 96 M61 119 Q74 126 87 119 Q74 113 61 119" />
+              </g>
+            </g>
+            <g transform="translate(218 432) rotate(2) scale(0.37) translate(-76 -198)">
+              <g class="tulip-bob tulip-bob--4">
+                <path fill="url(#tulipStem)" d="M74 198 L78 198 L79 102 Q76 95 73 99 Z" />
+                <path fill="#2f855a" d="M82 145 Q118 125 122 152 Q100 155 82 145" opacity="0.82" />
+                <path fill="url(#tulipYellow)" d="M73 100 C52 92 45 112 58 125 C64 115 73 110 73 100 M73 100 C73 110 82 115 88 125 C100 112 93 92 73 100 M58 125 Q73 130 88 125 Q73 118 58 125" />
+              </g>
+            </g>
+            <g transform="translate(262 442) rotate(-3) scale(0.33) translate(-76 -198)">
+              <g class="tulip-bob tulip-bob--5">
+                <path fill="url(#tulipStem)" d="M74 198 L78 198 L80 95 Q77 88 74 92 Z" />
+                <path fill="#276749" opacity="0.85" d="M72 150 Q40 130 35 155 Q55 158 72 150" />
+                <path fill="url(#tulipRefPurple)" d="M74 96 C56 89 49 106 61 119 C60 110 74 104 74 96 M74 96 C74 104 88 110 87 119 C99 106 92 89 74 96 M61 119 Q74 126 87 119 Q74 113 61 119" />
+                <ellipse cx="74" cy="108" rx="8" ry="5" fill="rgba(255,255,255,0.22)" />
+              </g>
+            </g>
+            <g transform="translate(306 430) rotate(1) scale(0.39) translate(-76 -198)">
+              <g class="tulip-bob tulip-bob--6">
+                <path fill="url(#tulipStem)" d="M74 198 L78 198 L79 102 Q76 95 73 99 Z" />
+                <path fill="#276749" d="M70 155 Q45 138 38 162 Q58 162 70 155" opacity="0.88" />
+                <path fill="url(#tulipYellow)" d="M73 100 C52 92 45 112 58 125 C64 115 73 110 73 100 M73 100 C73 110 82 115 88 125 C100 112 93 92 73 100 M58 125 Q73 130 88 125 Q73 118 58 125" />
+              </g>
+            </g>
+            <g transform="translate(348 444) rotate(-2) scale(0.31) translate(-76 -198)">
+              <g class="tulip-bob tulip-bob--7">
+                <path fill="url(#tulipStem)" d="M74 198 L78 198 L81 98 Q77 91 74 96 Z" />
+                <path fill="#276749" d="M68 152 Q42 132 36 158 Q54 158 68 152" opacity="0.88" />
+                <path fill="url(#tulipRefPurple)" d="M74 96 C56 89 49 106 61 119 C60 110 74 104 74 96 M74 96 C74 104 88 110 87 119 C99 106 92 89 74 96 M61 119 Q74 126 87 119 Q74 113 61 119" />
+              </g>
+            </g>
+            <g transform="translate(394 434) rotate(1) scale(0.34) translate(-76 -198)">
+              <g class="tulip-bob tulip-bob--8">
+                <path fill="url(#tulipStem)" d="M74 198 L78 198 L79 102 Q76 95 73 99 Z" />
+                <path fill="#276749" d="M70 155 Q45 138 38 162 Q58 162 70 155" opacity="0.88" />
+                <path fill="url(#tulipYellow)" d="M73 100 C52 92 45 112 58 125 C64 115 73 110 73 100 M73 100 C73 110 82 115 88 125 C100 112 93 92 73 100 M58 125 Q73 130 88 125 Q73 118 58 125" />
+              </g>
+            </g>
+          </g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="flower-wrap" id="flowerWrap">
+      <div class="flower-bloom">
+      <svg class="flower-svg" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="gradOuter" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#ff8fab" />
+            <stop offset="50%" style="stop-color:#e84a7f" />
+            <stop offset="100%" style="stop-color:#b83280" />
+          </linearGradient>
+          <linearGradient id="gradInner" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#ffd93d" />
+            <stop offset="100%" style="stop-color:#ff6b9d" />
+          </linearGradient>
+          <radialGradient id="gradCenter" cx="40%" cy="40%">
+            <stop offset="0%" style="stop-color:#fffef5" />
+            <stop offset="45%" style="stop-color:#ffd4a3" />
+            <stop offset="100%" style="stop-color:#e8976a" />
+          </radialGradient>
+          <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="b" />
+            <feMerge>
+              <feMergeNode in="b" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        <g class="layer-back">
+          <g class="sparkle-ring">
+            <circle cx="256" cy="256" r="198" fill="none" stroke="url(#gradOuter)" stroke-width="0.6" stroke-dasharray="4 18" opacity="0.5" />
+          </g>
+          <g>
+            <g transform="rotate(0 256 256)"><path class="petal-outer" d="M256 120 Q310 180 256 256 Q202 180 256 120" fill="url(#gradOuter)" opacity="0.75" /></g>
+            <g transform="rotate(45 256 256)"><path class="petal-outer" d="M256 120 Q310 180 256 256 Q202 180 256 120" fill="url(#gradOuter)" opacity="0.75" /></g>
+            <g transform="rotate(90 256 256)"><path class="petal-outer" d="M256 120 Q310 180 256 256 Q202 180 256 120" fill="url(#gradOuter)" opacity="0.75" /></g>
+            <g transform="rotate(135 256 256)"><path class="petal-outer" d="M256 120 Q310 180 256 256 Q202 180 256 120" fill="url(#gradOuter)" opacity="0.75" /></g>
+            <g transform="rotate(180 256 256)"><path class="petal-outer" d="M256 120 Q310 180 256 256 Q202 180 256 120" fill="url(#gradOuter)" opacity="0.75" /></g>
+            <g transform="rotate(225 256 256)"><path class="petal-outer" d="M256 120 Q310 180 256 256 Q202 180 256 120" fill="url(#gradOuter)" opacity="0.75" /></g>
+            <g transform="rotate(270 256 256)"><path class="petal-outer" d="M256 120 Q310 180 256 256 Q202 180 256 120" fill="url(#gradOuter)" opacity="0.75" /></g>
+            <g transform="rotate(315 256 256)"><path class="petal-outer" d="M256 120 Q310 180 256 256 Q202 180 256 120" fill="url(#gradOuter)" opacity="0.75" /></g>
+          </g>
+        </g>
+
+        <g class="layer-mid">
+          <g transform="rotate(0 256 256)"><path class="petal-inner" d="M256 160 Q292 210 256 256 Q220 210 256 160" fill="url(#gradInner)" filter="url(#softGlow)" /></g>
+          <g transform="rotate(60 256 256)"><path class="petal-inner" d="M256 160 Q292 210 256 256 Q220 210 256 160" fill="url(#gradInner)" filter="url(#softGlow)" /></g>
+          <g transform="rotate(120 256 256)"><path class="petal-inner" d="M256 160 Q292 210 256 256 Q220 210 256 160" fill="url(#gradInner)" filter="url(#softGlow)" /></g>
+          <g transform="rotate(180 256 256)"><path class="petal-inner" d="M256 160 Q292 210 256 256 Q220 210 256 160" fill="url(#gradInner)" filter="url(#softGlow)" /></g>
+          <g transform="rotate(240 256 256)"><path class="petal-inner" d="M256 160 Q292 210 256 256 Q220 210 256 160" fill="url(#gradInner)" filter="url(#softGlow)" /></g>
+          <g transform="rotate(300 256 256)"><path class="petal-inner" d="M256 160 Q292 210 256 256 Q220 210 256 160" fill="url(#gradInner)" filter="url(#softGlow)" /></g>
+        </g>
+
+        <g class="layer-front">
+          <circle class="flower-center" cx="256" cy="256" r="52" fill="url(#gradCenter)" />
+          <g class="stamen-group">
+            <line x1="256" y1="256" x2="256" y2="200" stroke="#5c3d1e" stroke-width="2.2" stroke-linecap="round" />
+            <line x1="256" y1="256" x2="290" y2="218" stroke="#5c3d1e" stroke-width="2" stroke-linecap="round" />
+            <line x1="256" y1="256" x2="222" y2="218" stroke="#5c3d1e" stroke-width="2" stroke-linecap="round" />
+            <line x1="256" y1="256" x2="278" y2="242" stroke="#5c3d1e" stroke-width="1.8" stroke-linecap="round" />
+            <line x1="256" y1="256" x2="234" y2="242" stroke="#5c3d1e" stroke-width="1.8" stroke-linecap="round" />
+            <circle cx="256" cy="198" r="5" fill="#ffe566" />
+            <circle cx="286" cy="216" r="4.5" fill="#ffe566" />
+            <circle cx="226" cy="216" r="4.5" fill="#ffe566" />
+            <circle cx="274" cy="236" r="4" fill="#fff3a0" />
+            <circle cx="238" cy="236" r="4" fill="#fff3a0" />
+          </g>
+        </g>
+      </svg>
+      </div>
+      </div>
+
+      <div class="butterfly-v-burst" aria-hidden="true">
+        <div class="bf-v-sway">
+          <div class="bf-v bf-v--1">
+            <div class="bf-v-inner">
+              <svg viewBox="0 0 64 72" xmlns="http://www.w3.org/2000/svg">
+                <g class="bf-wing-l">
+                  <ellipse cx="22" cy="34" rx="18" ry="26" fill="#f0abfc" opacity="0.95" />
+                  <ellipse cx="22" cy="38" rx="18" ry="26" fill="#fae8ff" opacity="0.35" />
+                </g>
+                <g class="bf-wing-r">
+                  <ellipse cx="42" cy="34" rx="18" ry="26" fill="#e879f9" opacity="0.95" />
+                  <ellipse cx="42" cy="38" rx="18" ry="26" fill="#fae8ff" opacity="0.25" />
+                </g>
+                <path fill="#1e1b2e" d="M32 18 Q30 36 32 56 Q34 36 32 18" />
+                <circle cx="32" cy="16" r="5" fill="#2d2640" />
+                <line x1="30" y1="14" x2="26" y2="10" stroke="#2d2640" stroke-width="1.2" />
+                <line x1="34" y1="14" x2="38" y2="10" stroke="#2d2640" stroke-width="1.2" />
+              </svg>
+            </div>
+          </div>
+          <div class="bf-v bf-v--2">
+            <div class="bf-v-inner">
+              <svg viewBox="0 0 64 72" xmlns="http://www.w3.org/2000/svg">
+                <g class="bf-wing-l"><ellipse cx="22" cy="34" rx="18" ry="26" fill="#93c5fd" opacity="0.92" /></g>
+                <g class="bf-wing-r"><ellipse cx="42" cy="34" rx="18" ry="26" fill="#c4b5fd" opacity="0.92" /></g>
+                <path fill="#1e1b2e" d="M32 18 Q30 36 32 56 Q34 36 32 18" />
+                <circle cx="32" cy="16" r="5" fill="#2d2640" />
+                <line x1="30" y1="14" x2="26" y2="10" stroke="#2d2640" stroke-width="1.2" />
+                <line x1="34" y1="14" x2="38" y2="10" stroke="#2d2640" stroke-width="1.2" />
+              </svg>
+            </div>
+          </div>
+          <div class="bf-v bf-v--3">
+            <div class="bf-v-inner bf-v-inner--flip">
+              <svg viewBox="0 0 64 72" xmlns="http://www.w3.org/2000/svg">
+                <g class="bf-wing-l"><ellipse cx="22" cy="34" rx="16" ry="22" fill="#fda4af" opacity="0.9" /></g>
+                <g class="bf-wing-r"><ellipse cx="42" cy="34" rx="16" ry="22" fill="#fb7185" opacity="0.9" /></g>
+                <path fill="#3f2e1f" d="M32 20 Q30 36 32 54 Q34 36 32 20" />
+                <circle cx="32" cy="18" r="4.5" fill="#2d2640" />
+                <line x1="30" y1="16" x2="26" y2="12" stroke="#2d2640" stroke-width="1" />
+                <line x1="34" y1="16" x2="38" y2="12" stroke="#2d2640" stroke-width="1" />
+              </svg>
+            </div>
+          </div>
+          <div class="bf-v bf-v--4">
+            <div class="bf-v-inner">
+              <svg viewBox="0 0 64 72" xmlns="http://www.w3.org/2000/svg">
+                <g class="bf-wing-l"><ellipse cx="22" cy="34" rx="17" ry="24" fill="#fde68a" opacity="0.9" /></g>
+                <g class="bf-wing-r"><ellipse cx="42" cy="34" rx="17" ry="24" fill="#fcd34d" opacity="0.9" /></g>
+                <path fill="#422006" d="M32 19 Q30 36 32 55 Q34 36 32 19" />
+                <circle cx="32" cy="17" r="5" fill="#2d2640" />
+                <line x1="30" y1="15" x2="26" y2="11" stroke="#2d2640" stroke-width="1.2" />
+                <line x1="34" y1="15" x2="38" y2="11" stroke="#2d2640" stroke-width="1.2" />
+              </svg>
+            </div>
+          </div>
+          <div class="bf-v bf-v--5">
+            <div class="bf-v-inner bf-v-inner--flip">
+              <svg viewBox="0 0 64 72" xmlns="http://www.w3.org/2000/svg">
+                <g class="bf-wing-l"><ellipse cx="22" cy="34" rx="17" ry="25" fill="#d8b4fe" opacity="0.9" /></g>
+                <g class="bf-wing-r"><ellipse cx="42" cy="34" rx="17" ry="25" fill="#e9d5ff" opacity="0.9" /></g>
+                <path fill="#1e1b2e" d="M32 18 Q30 36 32 56 Q34 36 32 18" />
+                <circle cx="32" cy="16" r="5" fill="#2d2640" />
+                <line x1="30" y1="14" x2="26" y2="10" stroke="#2d2640" stroke-width="1.2" />
+                <line x1="34" y1="14" x2="38" y2="10" stroke="#2d2640" stroke-width="1.2" />
+              </svg>
+            </div>
+          </div>
+          <div class="bf-v bf-v--6">
+            <div class="bf-v-inner">
+              <svg viewBox="0 0 64 72" xmlns="http://www.w3.org/2000/svg">
+                <g class="bf-wing-l"><ellipse cx="22" cy="34" rx="16" ry="23" fill="#86efac" opacity="0.88" /></g>
+                <g class="bf-wing-r"><ellipse cx="42" cy="34" rx="16" ry="23" fill="#bbf7d0" opacity="0.88" /></g>
+                <path fill="#1e1b2e" d="M32 19 Q30 36 32 55 Q34 36 32 19" />
+                <circle cx="32" cy="17" r="5" fill="#2d2640" />
+                <line x1="30" y1="15" x2="26" y2="11" stroke="#2d2640" stroke-width="1.2" />
+                <line x1="34" y1="15" x2="38" y2="11" stroke="#2d2640" stroke-width="1.2" />
+              </svg>
+            </div>
+          </div>
+          <div class="bf-v bf-v--7">
+            <div class="bf-v-inner bf-v-inner--flip">
+              <svg viewBox="0 0 64 72" xmlns="http://www.w3.org/2000/svg">
+                <g class="bf-wing-l"><ellipse cx="22" cy="34" rx="18" ry="26" fill="#fecdd3" opacity="0.9" /></g>
+                <g class="bf-wing-r"><ellipse cx="42" cy="34" rx="18" ry="26" fill="#fda4af" opacity="0.9" /></g>
+                <path fill="#1e1b2e" d="M32 18 Q30 36 32 56 Q34 36 32 18" />
+                <circle cx="32" cy="16" r="5" fill="#2d2640" />
+                <line x1="30" y1="14" x2="26" y2="10" stroke="#2d2640" stroke-width="1.2" />
+                <line x1="34" y1="14" x2="38" y2="10" stroke="#2d2640" stroke-width="1.2" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="vignette"></div>
+
+    <div class="popup-layer">
+      <div class="popup-track" id="popupTrack">
+        <div class="popup-sway-sync">
+          <div class="popup-card" role="dialog" aria-label="Message">
+            <span class="popup-shine" aria-hidden="true"></span>
+            <p class="popup-line">
+              <span class="w">Flower</span>
+              <span class="w">for</span>
+              <span class="w">you</span>
+            </p>
+            <p class="popup-line popup-line--accent">
+              <span class="w">Ante</span>
+              <span class="w">Meya</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="hint">Move the pointer · bloom &amp; glow</p>
+
+  <script>
+    (function () {
+      const canvas = document.getElementById('particles');
+      const ctx = canvas.getContext('2d');
+      const aurora = document.getElementById('aurora');
+      const bouquetWrap = document.getElementById('bouquetWrap');
+      const popupTrack = document.getElementById('popupTrack');
+
+      let w = 0;
+      let h = 0;
+      let mx = 0.5;
+      let my = 0.5;
+      let targetMx = 0.5;
+      let targetMy = 0.5;
+
+      const pollen = [];
+      const sparks = [];
+      const POLLEN_COUNT = 120;
+      const SPARK_COUNT = 78;
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      }
+
+      function rand(a, b) {
+        return a + Math.random() * (b - a);
+      }
+
+      function flowerNudgeY(viewH) {
+        const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+        return Math.min(5 * rem, viewH * 0.11);
+      }
+
+      function initParticles() {
+        pollen.length = 0;
+        sparks.length = 0;
+        for (let i = 0; i < POLLEN_COUNT; i++) {
+          pollen.push({
+            x: rand(0, w),
+            y: rand(0, h),
+            r: rand(0.6, 2.4),
+            vx: rand(-0.35, 0.35),
+            vy: rand(-0.55, -0.15),
+            a: rand(0.2, 0.75),
+            hue: rand(300, 340),
+          });
+        }
+        for (let i = 0; i < SPARK_COUNT; i++) {
+          sparks.push({
+            cx: w * 0.5,
+            cy: h * 0.5 + flowerNudgeY(h),
+            angle: rand(0, Math.PI * 2),
+            dist: rand(80, Math.min(w, h) * 0.42),
+            speed: rand(0.0004, 0.0012),
+            phase: rand(0, Math.PI * 2),
+            size: rand(1, 3),
+          });
+        }
+      }
+
+      window.addEventListener('resize', () => {
+        resize();
+        initParticles();
+      });
+
+      resize();
+      initParticles();
+
+      window.addEventListener('mousemove', (e) => {
+        targetMx = e.clientX / w;
+        targetMy = e.clientY / h;
+      });
+
+      window.addEventListener('touchmove', (e) => {
+        if (e.touches[0]) {
+          targetMx = e.touches[0].clientX / w;
+          targetMy = e.touches[0].clientY / h;
+        }
+      }, { passive: true });
+
+      function tick() {
+        mx += (targetMx - mx) * 0.06;
+        my += (targetMy - my) * 0.06;
+
+        const px = (mx - 0.5) * 28;
+        const py = (my - 0.5) * 28;
+        bouquetWrap.style.transform =
+          `translate(calc(-50% + ${px}px), calc(-50% + ${py}px)) rotate(${(mx - 0.5) * 4}deg)`;
+
+        const ppx = px * 0.52;
+        const ppy = py * 0.38;
+        popupTrack.style.transform =
+          `translate(${ppx}px, ${ppy}px) rotate(${(mx - 0.5) * 2.8}deg)`;
+
+        aurora.style.transform =
+          `translate(${(0.5 - mx) * 18}px, ${(0.5 - my) * 14}px) scale(1.02)`;
+
+        ctx.clearRect(0, 0, w, h);
+
+        const cx = w * 0.5 + (mx - 0.5) * 40;
+        const cy = h * 0.5 + flowerNudgeY(h) + (my - 0.5) * 30;
+
+        for (const p of pollen) {
+          p.x += p.vx + (mx - 0.5) * 0.4;
+          p.y += p.vy;
+          p.a += Math.sin(Date.now() * 0.001 + p.x * 0.01) * 0.01;
+          if (p.y < -10) {
+            p.y = h + 10;
+            p.x = rand(0, w);
+          }
+          if (p.x < -20) p.x = w + 20;
+          if (p.x > w + 20) p.x = -20;
+          ctx.fillStyle = `hsla(${p.hue}, 85%, 72%, ${Math.max(0.1, Math.min(0.9, p.a))})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        const t = Date.now() * 0.001;
+        for (const s of sparks) {
+          s.phase += s.speed * (1 + Math.sin(t) * 0.2);
+          const orbit = s.dist * (0.92 + Math.sin(s.phase * 3 + s.angle) * 0.08);
+          const sx = cx + Math.cos(s.angle + s.phase * 2.2) * orbit;
+          const sy = cy + Math.sin(s.angle + s.phase * 1.7) * orbit * 0.88;
+
+          const alpha = 0.25 + Math.sin(s.phase * 4) * 0.2;
+          const grd = ctx.createRadialGradient(sx, sy, 0, sx, sy, s.size * 4);
+          grd.addColorStop(0, `rgba(255, 240, 200, ${alpha})`);
+          grd.addColorStop(0.4, `rgba(255, 182, 220, ${alpha * 0.45})`);
+          grd.addColorStop(1, 'rgba(255, 182, 220, 0)');
+          ctx.fillStyle = grd;
+          ctx.beginPath();
+          ctx.arc(sx, sy, s.size * 4, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        requestAnimationFrame(tick);
+      }
+
+      requestAnimationFrame(tick);
+    })();
+  </script>
+</body>
+</html>
