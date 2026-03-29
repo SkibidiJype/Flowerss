@@ -46,7 +46,7 @@
         radial-gradient(ellipse 70% 60% at 80% 60%, rgba(236, 72, 153, 0.28), transparent 50%),
         radial-gradient(ellipse 60% 40% at 50% 100%, rgba(34, 211, 238, 0.12), transparent 45%),
         radial-gradient(circle at 50% 50%, #1a0a2e 0%, #0a0612 70%);
-      animation: auroraShift 14s ease-in-out infinite alternate;
+      animation: auroraShift 14s ease-in-out 0.6s infinite alternate;
       will-change: transform, filter;
     }
 
@@ -105,12 +105,12 @@
 
     .tulip-sync-ring {
       transform-origin: 256px 256px;
-      animation: wholeSway 8s ease-in-out infinite;
+      animation: wholeSway 8s ease-in-out 0.6s infinite;
     }
 
     .tulip-cluster-wiggle {
       transform-origin: 256px 452px;
-      animation: tulipClusterDrift 8.5s ease-in-out infinite;
+      animation: tulipClusterDrift 8.5s ease-in-out 0.6s infinite;
     }
 
     @keyframes tulipClusterDrift {
@@ -125,14 +125,14 @@
       animation: tulipBob 3.4s ease-in-out infinite;
     }
 
-    .tulip-bob--1 { animation-delay: 0s; }
-    .tulip-bob--2 { animation-delay: 0.35s; }
-    .tulip-bob--3 { animation-delay: 0.7s; }
-    .tulip-bob--4 { animation-delay: 0.18s; }
-    .tulip-bob--5 { animation-delay: 0.52s; }
-    .tulip-bob--6 { animation-delay: 0.88s; }
-    .tulip-bob--7 { animation-delay: 0.1s; }
-    .tulip-bob--8 { animation-delay: 0.62s; }
+    .tulip-bob--1 { animation-delay: calc(0s + 0.6s); }
+    .tulip-bob--2 { animation-delay: calc(0.35s + 0.6s); }
+    .tulip-bob--3 { animation-delay: calc(0.7s + 0.6s); }
+    .tulip-bob--4 { animation-delay: calc(0.18s + 0.6s); }
+    .tulip-bob--5 { animation-delay: calc(0.52s + 0.6s); }
+    .tulip-bob--6 { animation-delay: calc(0.88s + 0.6s); }
+    .tulip-bob--7 { animation-delay: calc(0.1s + 0.6s); }
+    .tulip-bob--8 { animation-delay: calc(0.62s + 0.6s); }
 
     @keyframes tulipBob {
       0%, 100% { transform: rotate(-3.4deg) translateY(0); }
@@ -145,13 +145,13 @@
       z-index: 1;
       pointer-events: none;
       overflow: visible;
-      animation: flowerPop 1.15s cubic-bezier(0.34, 1.45, 0.64, 1) 0.08s both;
+      animation: flowerPop 1.15s cubic-bezier(0.34, 1.45, 0.64, 1) 0.68s both;
     }
 
     .bf-v-sway {
       position: absolute;
       inset: 0;
-      animation: wholeSway 8s ease-in-out 1.12s infinite;
+      animation: wholeSway 8s ease-in-out 1.72s infinite;
       transform-origin: 50% 44%;
     }
 
@@ -187,13 +187,13 @@
     .bf-v--6 { left: 40%; top: 46%; }
     .bf-v--7 { left: 60%; top: 46%; }
 
-    .bf-v--1 .bf-v-inner { animation-delay: 1.12s; }
-    .bf-v--2 .bf-v-inner { animation-delay: 1.2s; }
-    .bf-v--3 .bf-v-inner { animation-delay: 1.18s; }
-    .bf-v--4 .bf-v-inner { animation-delay: 1.26s; }
-    .bf-v--5 .bf-v-inner { animation-delay: 1.22s; }
-    .bf-v--6 .bf-v-inner { animation-delay: 1.3s; }
-    .bf-v--7 .bf-v-inner { animation-delay: 1.32s; }
+    .bf-v--1 .bf-v-inner { animation-delay: calc(1.12s + 0.6s); }
+    .bf-v--2 .bf-v-inner { animation-delay: calc(1.2s + 0.6s); }
+    .bf-v--3 .bf-v-inner { animation-delay: calc(1.18s + 0.6s); }
+    .bf-v--4 .bf-v-inner { animation-delay: calc(1.26s + 0.6s); }
+    .bf-v--5 .bf-v-inner { animation-delay: calc(1.22s + 0.6s); }
+    .bf-v--6 .bf-v-inner { animation-delay: calc(1.3s + 0.6s); }
+    .bf-v--7 .bf-v-inner { animation-delay: calc(1.32s + 0.6s); }
 
     @keyframes bfVFloat {
       0%, 100% { transform: translate(0, 0); }
@@ -242,17 +242,17 @@
     }
 
     .layer-back {
-      animation: wholeSway 8s ease-in-out infinite;
+      animation: wholeSway 8s ease-in-out 0.6s infinite;
       transform-origin: 50% 55%;
     }
 
     .layer-mid {
-      animation: wholeSway 8s ease-in-out infinite 0.15s;
+      animation: wholeSway 8s ease-in-out 0.75s infinite;
       transform-origin: 50% 52%;
     }
 
     .layer-front {
-      animation: wholeSway 8s ease-in-out infinite 0.3s;
+      animation: wholeSway 8s ease-in-out 0.9s infinite;
       transform-origin: 50% 50%;
     }
 
@@ -266,14 +266,14 @@
       animation: petalPulse 5s ease-in-out infinite;
     }
 
-    .layer-back > g:nth-child(2) > g:nth-child(1) .petal-outer { animation-delay: 0s; }
-    .layer-back > g:nth-child(2) > g:nth-child(2) .petal-outer { animation-delay: 0.15s; }
-    .layer-back > g:nth-child(2) > g:nth-child(3) .petal-outer { animation-delay: 0.3s; }
-    .layer-back > g:nth-child(2) > g:nth-child(4) .petal-outer { animation-delay: 0.45s; }
-    .layer-back > g:nth-child(2) > g:nth-child(5) .petal-outer { animation-delay: 0.6s; }
-    .layer-back > g:nth-child(2) > g:nth-child(6) .petal-outer { animation-delay: 0.75s; }
-    .layer-back > g:nth-child(2) > g:nth-child(7) .petal-outer { animation-delay: 0.9s; }
-    .layer-back > g:nth-child(2) > g:nth-child(8) .petal-outer { animation-delay: 1.05s; }
+    .layer-back > g:nth-child(2) > g:nth-child(1) .petal-outer { animation-delay: calc(0s + 0.6s); }
+    .layer-back > g:nth-child(2) > g:nth-child(2) .petal-outer { animation-delay: calc(0.15s + 0.6s); }
+    .layer-back > g:nth-child(2) > g:nth-child(3) .petal-outer { animation-delay: calc(0.3s + 0.6s); }
+    .layer-back > g:nth-child(2) > g:nth-child(4) .petal-outer { animation-delay: calc(0.45s + 0.6s); }
+    .layer-back > g:nth-child(2) > g:nth-child(5) .petal-outer { animation-delay: calc(0.6s + 0.6s); }
+    .layer-back > g:nth-child(2) > g:nth-child(6) .petal-outer { animation-delay: calc(0.75s + 0.6s); }
+    .layer-back > g:nth-child(2) > g:nth-child(7) .petal-outer { animation-delay: calc(0.9s + 0.6s); }
+    .layer-back > g:nth-child(2) > g:nth-child(8) .petal-outer { animation-delay: calc(1.05s + 0.6s); }
 
     @keyframes petalPulse {
       0%, 100% {
@@ -292,12 +292,12 @@
       animation: innerFlutter 4s ease-in-out infinite;
     }
 
-    .layer-mid > g:nth-child(1) .petal-inner { animation-delay: 0.1s; }
-    .layer-mid > g:nth-child(2) .petal-inner { animation-delay: 0.25s; }
-    .layer-mid > g:nth-child(3) .petal-inner { animation-delay: 0.4s; }
-    .layer-mid > g:nth-child(4) .petal-inner { animation-delay: 0.55s; }
-    .layer-mid > g:nth-child(5) .petal-inner { animation-delay: 0.7s; }
-    .layer-mid > g:nth-child(6) .petal-inner { animation-delay: 0.85s; }
+    .layer-mid > g:nth-child(1) .petal-inner { animation-delay: calc(0.1s + 0.6s); }
+    .layer-mid > g:nth-child(2) .petal-inner { animation-delay: calc(0.25s + 0.6s); }
+    .layer-mid > g:nth-child(3) .petal-inner { animation-delay: calc(0.4s + 0.6s); }
+    .layer-mid > g:nth-child(4) .petal-inner { animation-delay: calc(0.55s + 0.6s); }
+    .layer-mid > g:nth-child(5) .petal-inner { animation-delay: calc(0.7s + 0.6s); }
+    .layer-mid > g:nth-child(6) .petal-inner { animation-delay: calc(0.85s + 0.6s); }
 
     @keyframes innerFlutter {
       0%, 100% {
@@ -310,7 +310,7 @@
 
     .flower-center {
       transform-origin: 256px 256px;
-      animation: centerBreathe 3.5s ease-in-out infinite;
+      animation: centerBreathe 3.5s ease-in-out 0.6s infinite;
     }
 
     @keyframes centerBreathe {
@@ -320,7 +320,7 @@
 
     .stamen-group {
       transform-origin: 256px 248px;
-      animation: stamenTwist 6s ease-in-out infinite;
+      animation: stamenTwist 6s ease-in-out 0.6s infinite;
     }
 
     @keyframes stamenTwist {
@@ -330,7 +330,7 @@
 
     .sparkle-ring {
       transform-origin: 256px 256px;
-      animation: ringSpin 20s linear infinite;
+      animation: ringSpin 20s linear 0.6s infinite;
       opacity: 0.45;
     }
 
@@ -355,7 +355,7 @@
     .flower-bloom {
       width: 100%;
       height: 100%;
-      animation: flowerPop 1.15s cubic-bezier(0.34, 1.45, 0.64, 1) 0.08s both;
+      animation: flowerPop 1.15s cubic-bezier(0.34, 1.45, 0.64, 1) 0.68s both;
     }
 
     @keyframes flowerPop {
@@ -388,7 +388,7 @@
     }
 
     .popup-sway-sync {
-      animation: wholeSway 8s ease-in-out infinite;
+      animation: wholeSway 8s ease-in-out 0.6s infinite;
       transform-origin: center top;
       margin-top: clamp(0.25rem, 2vh, 1rem);
     }
@@ -409,8 +409,8 @@
       -webkit-backdrop-filter: blur(14px);
       opacity: 0;
       transform: scale(0.72) translateY(-1.25rem);
-      animation: cardPop 1s cubic-bezier(0.34, 1.4, 0.64, 1) 0.32s forwards,
-        popupGlowPulse 8s ease-in-out 1.25s infinite;
+      animation: cardPop 1s cubic-bezier(0.34, 1.4, 0.64, 1) 0.92s forwards,
+        popupGlowPulse 8s ease-in-out 1.85s infinite;
     }
 
     @keyframes cardPop {
@@ -475,11 +475,11 @@
       }
     }
 
-    .popup-line:nth-child(2) .w:nth-child(1) { animation-delay: 0.52s; }
-    .popup-line:nth-child(2) .w:nth-child(2) { animation-delay: 0.62s; }
-    .popup-line:nth-child(2) .w:nth-child(3) { animation-delay: 0.72s; }
-    .popup-line:nth-child(3) .w:nth-child(1) { animation-delay: 0.88s; }
-    .popup-line:nth-child(3) .w:nth-child(2) { animation-delay: 0.98s; }
+    .popup-line:nth-child(2) .w:nth-child(1) { animation-delay: calc(0.52s + 0.6s); }
+    .popup-line:nth-child(2) .w:nth-child(2) { animation-delay: calc(0.62s + 0.6s); }
+    .popup-line:nth-child(2) .w:nth-child(3) { animation-delay: calc(0.72s + 0.6s); }
+    .popup-line:nth-child(3) .w:nth-child(1) { animation-delay: calc(0.88s + 0.6s); }
+    .popup-line:nth-child(3) .w:nth-child(2) { animation-delay: calc(0.98s + 0.6s); }
 
     .popup-shine {
       position: absolute;
@@ -489,7 +489,7 @@
       height: 100%;
       background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.14), transparent);
       transform: skewX(-18deg);
-      animation: shineLoop 5s ease-in-out infinite;
+      animation: shineLoop 5s ease-in-out 0.6s infinite;
       opacity: 0;
       pointer-events: none;
     }
@@ -553,13 +553,6 @@
           </defs>
           <g class="tulip-sync-ring">
           <g class="tulip-cluster-wiggle">
-            <g class="tulip-foliage">
-              <ellipse cx="256" cy="498" rx="220" ry="26" fill="#14532d" opacity="0.4" />
-              <path fill="#166534" d="M40 512 Q120 462 200 478 Q256 468 312 475 Q400 458 476 492 L480 512 Z" opacity="0.62" />
-              <path fill="#22c55e" d="M60 512 Q170 478 256 488 Q350 475 455 500 L465 512 Z" opacity="0.38" />
-            </g>
-            <ellipse cx="198" cy="476" rx="10" ry="15" fill="#86efac" opacity="0.5" transform="rotate(-12 198 476)" />
-            <ellipse cx="312" cy="478" rx="9" ry="13" fill="#bbf7d0" opacity="0.48" transform="rotate(10 312 478)" />
             <g transform="translate(82 440) rotate(-4) scale(0.34) translate(-76 -198)">
               <g class="tulip-bob tulip-bob--1">
                 <path fill="url(#tulipStem)" d="M74 198 L78 198 L80 95 Q77 88 74 92 Z" />
@@ -829,8 +822,9 @@
 
       const pollen = [];
       const sparks = [];
-      const POLLEN_COUNT = 120;
-      const SPARK_COUNT = 78;
+      // Reduced counts for smoother mobile performance
+      const POLLEN_COUNT = 55;
+      const SPARK_COUNT = 38;
 
       function resize() {
         w = canvas.width = window.innerWidth;
